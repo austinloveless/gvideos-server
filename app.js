@@ -9,6 +9,7 @@ const methodOverride = require("method-override");
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
+mongoose.connect("mongodb://austin:austin5171@ds119702.mlab.com:19702/gvideos");
 
 app.get("/", (req, res) => {
   res.redirect("videos");
