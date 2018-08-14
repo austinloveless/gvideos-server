@@ -24,6 +24,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -36,7 +37,9 @@ app.get("/secret", (req, res) => {
 app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
-
+app.get("/login", (req, res) => {
+  res.render("login.ejs");
+});
 app.post("/register", (req, res) => {
   User.register(
     new User({ username: req.body.username }),
@@ -54,24 +57,15 @@ app.post("/register", (req, res) => {
   );
 });
 
-app.post("/login", (req, res, next) => {
-  passport.authenticate("local", function(err, user, info) {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.redirect("/login");
-    }
-    req.logIn(user, function(err) {
-      if (err) {
-        return next(err);
-      }
-      return res.redirect("/secret");
-    });
-  })(req, res, next);
+app.post("/login", passport.authenticate("local"), function(req, res) {
+  // If this function gets called, authentication was successful.
+  // `req.user` contains the authenticated user.
+  res.redirect("/secret");
 });
 
-// app.post("/login", (req, res) => {});
+app.get("/logout", (req, res) => {
+  req.logout();
+});
 
 app.listen(port, function() {
   console.log("APP IS RUNNING ON PORT ", port);
