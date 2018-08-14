@@ -1,13 +1,14 @@
 const express = require("express"),
   app = express(),
   port = process.env.PORT || 8000,
-  User = require("./models/user"),
   bodyParser = require("body-parser"),
   cors = require("cors"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
   passportLocalMongoose = require("passport-local-mongoose"),
-  videoRoutes = require("./routes/videos");
+  User = require("./models/user"),
+  videoRoutes = require("./routes/videos"),
+  authRoutes = require("./routes/auth");
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,34 +30,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use("/api/videos", videoRoutes);
-
-app.post("/register", (req, res) => {
-  User.register(
-    new User({ username: req.body.username }),
-    req.body.password,
-    (err, user) => {
-      if (err) {
-        return console.log(err);
-      }
-      passport.authenticate("local")(req, res, () => {
-        res.json({
-          username: req.body.username
-        });
-      });
-    }
-  );
-});
-
-app.post("/login", passport.authenticate("local"), function(req, res) {
-  // If this function gets called, authentication was successful.
-  // `req.user` contains the authenticated user.
-  res.send("successful logged in");
-});
-
-app.get("/logout", (req, res) => {
-  req.logout();
-  res.send("logged out ");
-});
+app.use("/auth", authRoutes);
 
 app.listen(port, function() {
   console.log("APP IS RUNNING ON PORT ", port);
