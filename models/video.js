@@ -2,13 +2,16 @@ const mongoose = require("mongoose");
 
 const videoSchema = new mongoose.Schema({
   title: String,
-  videourl: String,
+  url: String,
   instructor: String,
+  description: String,
+  category: String,
   date: {
     type: Date,
     default: Date.now
   },
-  options: Array
+  tags: Array,
+  views: Number
 });
 const Video = mongoose.model("Video", videoSchema);
 
