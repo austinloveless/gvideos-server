@@ -30,16 +30,6 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use("/api/videos", videoRoutes);
 
-app.get("/secret", (req, res) => {
-  res.render("secret.ejs");
-});
-
-app.get("/register", (req, res) => {
-  res.render("register.ejs");
-});
-app.get("/login", (req, res) => {
-  res.render("login.ejs");
-});
 app.post("/register", (req, res) => {
   User.register(
     new User({ username: req.body.username }),
@@ -60,7 +50,6 @@ app.post("/register", (req, res) => {
 app.post("/login", passport.authenticate("local"), function(req, res) {
   // If this function gets called, authentication was successful.
   // `req.user` contains the authenticated user.
-  res.redirect("/secret");
 });
 
 app.get("/logout", (req, res) => {
