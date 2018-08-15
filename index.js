@@ -34,11 +34,8 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/api/videos", videoRoutes);
 app.use("/auth", authRoutes);
 
-app.get("/api/videos/category", (req, res) => {
-  // Video.findById(req.params.category).then(function(foundVideo) {
-  //   res.json(foundVideo);
-  // });
-  res.send("ba");
+app.get("/category", (req, res) => {
+  res.send("caat");
 });
 
 app.listen(port, function() {
