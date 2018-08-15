@@ -13,7 +13,11 @@ exports.getVideos = function(req, res) {
 
 exports.createVideo = function(req, res) {
   const token = req.headers.authorization.substring(7);
-  console.log(token);
+  const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+  console.log(verified);
+  if (verified) {
+    res.json({ verified });
+  }
   // db.Video.create(req.body)
   //   .then(function(newVideo) {
   //     res.status(201).json(newVideo);
