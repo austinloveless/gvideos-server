@@ -4,7 +4,11 @@ var User = require("../models/user");
 var passport = require("passport");
 
 router.post("/register", register);
-router.post("/login", passport.authenticate("local"), login);
+router.post(
+  "/login",
+  passport.authenticate("authtoken", { session: false, optional: false }),
+  login
+);
 router.get("/logout", logout);
 
 module.exports = router;
