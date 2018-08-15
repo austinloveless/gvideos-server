@@ -1,4 +1,5 @@
 var db = require("../models");
+var jwt = require("jsonwebtoken");
 
 exports.getVideos = function(req, res) {
   db.Video.find()
@@ -11,13 +12,15 @@ exports.getVideos = function(req, res) {
 };
 
 exports.createVideo = function(req, res) {
-  db.Video.create(req.body)
-    .then(function(newVideo) {
-      res.status(201).json(newVideo);
-    })
-    .catch(function(err) {
-      res.send(err);
-    });
+  const token = req.headers.authorization.substring(7);
+  console.log(token);
+  // db.Video.create(req.body)
+  //   .then(function(newVideo) {
+  //     res.status(201).json(newVideo);
+  //   })
+  //   .catch(function(err) {
+  //     res.send(err);
+  //   });
 };
 
 exports.getVideo = function(req, res) {
