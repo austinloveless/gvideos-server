@@ -29,6 +29,15 @@ exports.getVideo = function(req, res) {
       res.send(err);
     });
 };
+exports.getCategory = function(req, res) {
+  db.Video.findById(req.params.category)
+    .then(function(foundVideo) {
+      res.json(foundVideo);
+    })
+    .catch(function(err) {
+      res.send(err);
+    });
+};
 
 exports.updateVideo = function(req, res) {
   db.Video.findOneAndUpdate({ _id: req.params.videoId }, req.body, {

@@ -8,7 +8,9 @@ const express = require("express"),
   passportLocalMongoose = require("passport-local-mongoose"),
   User = require("./models/user"),
   videoRoutes = require("./routes/videos"),
-  authRoutes = require("./routes/auth");
+  authRoutes = require("./routes/auth"),
+  jwt = require("jsonwebtoken");
+var Video = require("./models");
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +33,13 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use("/api/videos", videoRoutes);
 app.use("/auth", authRoutes);
+
+app.get("/api/videos/category", (req, res) => {
+  // Video.findById(req.params.category).then(function(foundVideo) {
+  //   res.json(foundVideo);
+  // });
+  res.send("ba");
+});
 
 app.listen(port, function() {
   console.log("APP IS RUNNING ON PORT ", port);
