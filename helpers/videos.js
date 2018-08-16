@@ -12,20 +12,20 @@ exports.getVideos = function(req, res) {
 };
 
 exports.createVideo = function(req, res) {
-  const token = req.headers.authorization.substring(7);
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-    if (err) {
-      res.json({ err });
-    } else {
-      db.Video.create(req.body)
-        .then(function(newVideo) {
-          res.status(201).json(newVideo);
-        })
-        .catch(function(err) {
-          res.send(err);
-        });
-    }
-  });
+  // const token = req.headers.authorization.substring(7);
+  // jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+  //   if (err) {
+  //     res.json({ err });
+  //   } else {
+  db.Video.create({ $push: req.body })
+    .then(function(newVideo) {
+      res.status(201).json(newVideo);
+    })
+    .catch(function(err) {
+      res.send(err);
+    });
+  //   }
+  // });
 };
 
 exports.getVideo = function(req, res) {
@@ -48,11 +48,6 @@ exports.getCategory = function(req, res) {
 };
 
 exports.updateVideo = function(req, res) {
-  // const token = req.headers.authorization.substring(7);
-  // jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-  //   if (err) {
-  //     res.json({ err });
-  //   } else {
   db.Video.findOneAndUpdate({ _id: req.params.videoId }, req.body, {
     new: true
   })
@@ -62,16 +57,9 @@ exports.updateVideo = function(req, res) {
     .catch(function(err) {
       res.send(err);
     });
-  //   }
-  // });
 };
 
 exports.deleteVideo = function(req, res) {
-  // const token = req.headers.authorization.substring(7);
-  // jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-  //   if (err) {
-  //     res.json({ err });
-  //   } else {
   db.Video.remove({ _id: req.params.videoId })
     .then(function() {
       res.json({ message: "We deleted it!" });
@@ -79,8 +67,6 @@ exports.deleteVideo = function(req, res) {
     .catch(function(err) {
       res.send(err);
     });
-  // }
-  // });
 };
 
 module.exports = exports;
