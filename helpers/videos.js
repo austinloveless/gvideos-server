@@ -12,20 +12,20 @@ exports.getVideos = function(req, res) {
 };
 
 exports.createVideo = function(req, res) {
-  // const token = req.headers.authorization.substring(7);
-  // jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-  //   if (err) {
-  //     res.json({ err });
-  //   } else {
-  db.Video.create({ $push: req.body })
-    .then(function(newVideo) {
-      res.status(201).json(newVideo);
-    })
-    .catch(function(err) {
-      res.send(err);
-    });
-  //   }
-  // });
+  const token = req.headers.authorization.substring(7);
+  jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      res.json({ err });
+    } else {
+      db.Video.create(req.body)
+        .then(function(newVideo) {
+          res.status(201).json(newVideo);
+        })
+        .catch(function(err) {
+          res.send(err);
+        });
+    }
+  });
 };
 
 exports.getVideo = function(req, res) {

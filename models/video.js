@@ -10,7 +10,7 @@ const videoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  tags: Array,
+  tags: String,
   views: Number
 });
 const Video = mongoose.model("Video", videoSchema);
